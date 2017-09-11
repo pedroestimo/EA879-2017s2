@@ -10,14 +10,33 @@ void yyerror(char *);
 
 
 %%
+[*]  { return MULT; }
+
+[/]  { return DIV; }
+
+\[  { return ACOL; }
+
+\]  { return FCOL; }
+
+\"  { return ASPA; }
+
+[=]  { return IGUAL; }
+
+\n  { return EOL; }
+
+[ \t]+ ;
 
 [a-z]  {
-        yylval.ival = yytext[0] - 'a';
-        return VAR;
+       yylval.ival = yytext[0] - 'a';
+       return VAR;
        }
 
-
-\" { return ASPA; }
+[0-9]*\.?[0-9]+  {
+       for (int i = 0; i<yyleng; i++){
+         yyval.fval = atof (yytext);
+         }
+       return FLOAT;   
+       }
 
 [a-zA-Z0-9\.]+  {
         for (int i = 0; i < yyleng; i++ )
@@ -28,17 +47,7 @@ void yyerror(char *);
         return STRING;
        }
 
-[=]     {
-          return IGUAL;
-        }
-
-\n   {
-         return EOL;
-       }
-
-[ \t]+ ;
-
-.     {printf("**%s**\n", yytext);
+.  {printf("**%s**\n", yytext);
 yyerror("Token nao reconhecido!\n");}
 
 %%

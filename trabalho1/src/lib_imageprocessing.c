@@ -80,3 +80,39 @@ void salvar_imagem(char *nome_do_arquivo, imagem *I) {
   FreeImage_Save(FIF_JPEG, bitmapOut, nome_do_arquivo, JPEG_DEFAULT);
 }
 
+void brilho (imagem *I, float constante, char operacao){
+  for (int i = 0; i < I.width; i++){
+    for (int j = 0; j < I.height; j++){
+    int idx;
+
+    idx = i + (j*I->width); 
+      if (operacao == '*'){
+        I.r[idx] = I.r[idx] * constante;
+        I.g[idx] = I.g[idx] * constante;
+        I.b[idx] = I.b[idx] * constante;
+      }
+      if (operacao == '/'){
+        I.r[idx] = I.r[idx] / constante;
+        I.g[idx] = I.g[idx] / constante;
+        I.b[idx] = I.b[idx] / constante;
+      }
+  }
+  
+}
+
+float valor_maximo (imagem *I) {
+  float max =0;
+  for (int i=0; i<I->width; i++) {
+     for (int j=0; j<I->height; j++) {
+      int idx;
+
+      idx = i + (j*I->width);
+      if (I.r[idx]>max) max = I.r[idx];
+      if (I.g[idx]>max) max = I.r[idx];
+      if (I.b[idx]>max) max = I.r[idx];
+      
+    }
+  }
+  return max;
+}
+
